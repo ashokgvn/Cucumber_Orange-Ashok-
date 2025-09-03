@@ -6,7 +6,7 @@ import io.cucumber.java.Before;
 public class Hooks {
 	
 	@Before
-	public void setUp() {
+	public void setup() {
 		// Driver created when openPage() is called in Background
 	}
 	
