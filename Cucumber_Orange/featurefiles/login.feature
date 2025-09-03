@@ -1,5 +1,5 @@
 Feature: login functionality to orangehrm website as admin
-@MissingUsername
+
   Background: 
     Given launch url in browser "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
 
@@ -19,7 +19,7 @@ Feature: login functionality to orangehrm website as admin
       | sfsdgfdb | sdsdfr   | Invalid credentials |
       | dewrrett | dfrgttgg | Invalid credentials |
 
-  
+  @MissingUsername
   Scenario Outline: Login with blank username
     When Enter Username text as "<username>" and Password as "<password>"
     Then User should see the required message as "<required>"
