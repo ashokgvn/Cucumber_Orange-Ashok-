@@ -17,7 +17,6 @@ pipeline {
 
         stage('Build Project') {
             steps {
-                // Run Maven inside the subfolder where pom.xml exists
                 dir('Cucumber_Orange') {
                     bat 'mvn clean compile'
                 }
@@ -35,8 +34,9 @@ pipeline {
         stage('Publish Reports') {
             steps {
                 dir('Cucumber_Orange') {
+                    // Cucumber HTML Report
                     publishHTML([
-                        allowMissing: false,
+                        allowMissing: true,             // won't fail if folder doesn't exist
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
                         reportDir: 'target/cucumber-reports',
@@ -44,8 +44,9 @@ pipeline {
                         reportName: 'Cucumber HTML Report'
                     ])
 
+                    // Extent Report
                     publishHTML([
-                        allowMissing: false,
+                        allowMissing: true,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
                         reportDir: 'target/extent-reports',
@@ -53,8 +54,9 @@ pipeline {
                         reportName: 'Extent Report'
                     ])
 
+                    // TestNG Report
                     publishHTML([
-                        allowMissing: false,
+                        allowMissing: true,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
                         reportDir: 'test-output',
