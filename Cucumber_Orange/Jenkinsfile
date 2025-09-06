@@ -1,15 +1,14 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven3'   // Maven version installed in Jenkins (Global Tool Config)
-        jdk 'JDK21'      // JDK version installed in Jenkins
+    environment {
+        JAVA_HOME = 'C:\\Program Files\\Java\\jdk-21'
+        PATH = "${env.JAVA_HOME}\\bin;E:\\apache-maven-3.9.11\\bin;${env.PATH}"
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                // Pull project from GitHub
                 git branch: 'main',
                     credentialsId: '412b71b1-195f-459d-89c4-2397fd81805d',
                     url: 'https://github.com/ashokgvn/Cucumber_Orange-Ashok-.git'
@@ -18,21 +17,18 @@ pipeline {
 
         stage('Build Project') {
             steps {
-                // Clean and compile the project
                 bat 'mvn clean compile'
             }
         }
 
         stage('Run Tests') {
             steps {
-                // Run all Cucumber/TestNG tests
                 bat 'mvn test'
             }
         }
 
         stage('Publish Reports') {
             steps {
-                // Cucumber HTML Report
                 publishHTML([
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
@@ -42,7 +38,6 @@ pipeline {
                     reportName: 'Cucumber HTML Report'
                 ])
 
-                // Extent Report
                 publishHTML([
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
@@ -52,7 +47,6 @@ pipeline {
                     reportName: 'Extent Report'
                 ])
 
-                // TestNG Report
                 publishHTML([
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
@@ -68,7 +62,7 @@ pipeline {
     post {
         always {
             echo 'Cleaning workspace...'
-            deleteDir()   // Cleanup after build
+            deleteDir()
         }
     }
 }
