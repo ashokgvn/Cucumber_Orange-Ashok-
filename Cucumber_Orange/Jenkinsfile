@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven3'   // Maven version installed in Jenkins (Global Tool Config)
+        jdk 'JDK11'      // JDK version installed in Jenkins
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                // Pull project from GitHub (replace with your repo)
+                git url: 'https://github.com/your-org/your-repo.git', branch: 'main'
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                // Clean and compile the project
+                bat 'mvn clean compile'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                // Run all Cucumber/TestNG tests
+                bat 'mvn test'
+            }
+        }
+
+        stage('Publish Reports') {
+            steps {
+                // Cucumber HTML Report
+                publishHTML([reportDir: 'target/cucumber-reports',
+                             reportFiles: 'index.html',
+                             reportName: 'Cucumber HTML Report'])
+
+                // Extent Report
+                publishHTML([reportDir: 'target/extent-reports',
+                             reportFiles: 'index.html',
+                             reportName: 'Extent Report'])
+
+                // TestNG Report
+                publishHTML([reportDir: 'test-output',
+                             reportFiles: 'index.html',
+                             reportName: 'TestNG Report'])
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning workspace...'
+            deleteDir()   // Cleanup after build
+        }
+    }
+}
