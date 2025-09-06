@@ -13,7 +13,9 @@ pipeline {
                 git url: 'https://github.com/your-org/your-repo.git', branch: 'main'
             }
         }
-
+	git branch: 'main', 
+	credentialsId: '412b71b1-195f-459d-89c4-2397fd81805d', 
+	url: 'https://github.com/ashokgvn/Cucumber_Orange-Ashok-.git'
         stage('Build Project') {
             steps {
                 // Clean and compile the project
