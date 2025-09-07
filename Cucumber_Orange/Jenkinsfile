@@ -17,53 +17,47 @@ pipeline {
 
         stage('Build Project') {
             steps {
-                dir('Cucumber_Orange') {
-                    bat 'mvn clean compile'
-                }
+                bat 'mvn clean compile'
             }
         }
 
         stage('Run Tests') {
             steps {
-                dir('Cucumber_Orange') {
-                    bat 'mvn test'
-                }
+                bat 'mvn test'
             }
         }
 
         stage('Publish Reports') {
             steps {
-                dir('Cucumber_Orange') {
-                    // Cucumber HTML Report
-                    publishHTML([
-                        allowMissing: true,             // won't fail if folder doesn't exist
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'target/cucumber-reports',
-                        reportFiles: 'index.html',
-                        reportName: 'Cucumber HTML Report'
-                    ])
+                // Cucumber HTML Report
+                publishHTML([
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'target/cucumber-reports',
+                    reportFiles: 'report.html',
+                    reportName: 'Cucumber HTML Report'
+                ])
 
-                    // Extent Report
-                    publishHTML([
-                        allowMissing: true,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'target/extent-reports',
-                        reportFiles: 'index.html',
-                        reportName: 'Extent Report'
-                    ])
+                // Extent Report
+                publishHTML([
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'target/extent-reports',
+                    reportFiles: 'index.html',
+                    reportName: 'Extent Report'
+                ])
 
-                    // TestNG Report
-                    publishHTML([
-                        allowMissing: true,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'test-output',
-                        reportFiles: 'index.html',
-                        reportName: 'TestNG Report'
-                    ])
-                }
+                // TestNG Report
+                publishHTML([
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'test-output',
+                    reportFiles: 'index.html',
+                    reportName: 'TestNG Report'
+                ])
             }
         }
     }
