@@ -1,9 +1,0 @@
-<extentreports>
-    <configuration>
-        <encoding>utf-8</encoding>
-        <theme>dark</theme> <!-- standard / dark -->
-        <timelineEnabled>true</timelineEnabled>
-        <documentTitle>OrangeHRM Automation Report</documentTitle>
-        <reportName>Extent Spark Report</reportName>
-    </configuration>
-</extentreports>
