@@ -14,7 +14,16 @@ pipeline {
                     url: 'https://github.com/ashokgvn/Cucumber_Orange-Ashok-.git'
             }
         }
-
+        
+ 		stage('Prepare Report Folders') {
+            steps {
+                dir('Cucumber_Orange') {
+                    bat 'mkdir target\\cucumber-reports || exit 0'
+                    bat 'mkdir target\\extent-reports || exit 0'
+                }
+            }
+        }
+        
         stage('Build Project') {
             steps {
                 dir('Cucumber_Orange') {
