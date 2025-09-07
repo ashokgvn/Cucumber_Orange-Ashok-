@@ -15,15 +15,6 @@ pipeline {
             }
         }
         
- 		stage('Prepare Report Folders') {
-            steps {
-                dir('Cucumber_Orange') {
-                    bat 'mkdir target\\cucumber-reports || exit 0'
-                    bat 'mkdir target\\extent-reports || exit 0'
-                }
-            }
-        }
-        
         stage('Build Project') {
             steps {
                 dir('Cucumber_Orange') {
@@ -58,8 +49,8 @@ pipeline {
                         allowMissing: true,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
-                        reportDir: 'target/extent-reports',        
-    					reportFiles: 'index.html',
+                        reportDir: 'target/ExtentReports',        
+    					reportFiles: 'extent-report.html',
     					reportName: 'Extent Report'
                     ])
 
