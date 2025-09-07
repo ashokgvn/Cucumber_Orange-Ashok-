@@ -44,13 +44,13 @@ pipeline {
                         reportName: 'Cucumber HTML Report'
                     ])
 
-                    // Extent Report
+                    // Extent Report - IMPORTANT: index.html is the entry for folder-based Spark report
                     publishHTML([
                         allowMissing: true,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
                         reportDir: 'target/ExtentReports',        
-    					reportFiles: 'index.html',      
+    					reportFiles: 'index.html',      // <-- index.html (NOT extent-report.html)
     					reportName: 'Extent Report'
                     ])
 
@@ -69,9 +69,15 @@ pipeline {
     }
 
     post {
-        always {
-            echo 'Cleaning workspace...'
-            deleteDir()
-        }
+  always {
+    dir('Cucumber_Orange') {
+      // archive the extent folder (so the build keeps a copy even if workspace is cleaned)
+      archiveArtifacts artifacts: 'target/ExtentReports/**', fingerprint: true
+
+      // optionally archive cucumber-reports as well
+      archiveArtifacts artifacts: 'target/cucumber-reports/**', fingerprint: true
     }
+    echo 'Cleaning workspace...'
+    deleteDir()
+  }
 }

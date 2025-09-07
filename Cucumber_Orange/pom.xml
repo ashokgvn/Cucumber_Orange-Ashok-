@@ -56,6 +56,15 @@
 </dependency>
   </dependencies>
   <build>
+  <!-- ✅ This makes sure src/test/resources is copied to target/test-classes -->
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </testResource>
+    </testResources>
     <plugins>
       <!-- Maven Surefire Plugin to run TestNG tests -->
       <plugin>
