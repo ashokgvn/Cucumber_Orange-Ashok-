@@ -49,9 +49,9 @@ pipeline {
                         allowMissing: true,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
-                        reportDir: 'target/extent-reports',
-                        reportFiles: 'index.html',
-                        reportName: 'Extent Report'
+                        reportDir: 'target/ExtentReports',        
+    					reportFiles: 'extent-report.html',      
+    					reportName: 'Extent Report'
                     ])
 
                     // TestNG Report
