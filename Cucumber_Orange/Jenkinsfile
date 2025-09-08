@@ -1,13 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-		// Correctly set PATH for Windows using backslashes
-        JAVA_HOME = 'C:\\Program Files\\Java\\jdk-21'
-        // Use bat context to make environment variable changes accessible to bat steps
-        PATH = "C:\\Program Files\\Java\\jdk-21\\bin;E:\\apache-maven-3.9.11\\bin;%PATH%"
-    }
-
     stages {
         stage('Checkout Code') {
             steps {
@@ -20,8 +13,11 @@ pipeline {
         stage('Build and Test') {
             steps {
                 dir('Cucumber_Orange') {
-					// Combine compile and test into a single command
-                    bat 'mvn clean test'
+                    // Use a single bat step to run all commands in the same shell
+                    bat """
+                        set PATH=C:\\Program Files\\Java\\jdk-21\\bin;E:\\apache-maven-3.9.11\\bin;%PATH%
+                        mvn clean test
+                    """
                 }
             }
         }
@@ -29,35 +25,35 @@ pipeline {
         stage('Publish Reports') {
             steps {
                 dir('Cucumber_Orange') {
-                    // Correctly publish multiple reports using the 'target' parameter
-                    publishHTML(target:[
-						[
-                        	allowMissing: true,
-                        	alwaysLinkToLastBuild: true,
-                        	keepAll: true,
-                        	reportDir: 'target/cucumber-reports',
-                        	reportFiles: 'report.html',
-                        	reportName: 'Cucumber HTML Report'
-                    	],
+                    // Publish Cucumber HTML Report
+                    publishHTML(
+                        allowMissing: true,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'target/cucumber-reports',
+                        reportFiles: 'report.html',
+                        reportName: 'Cucumber HTML Report'
+                    )
 
-                    	[
-                        	allowMissing: true,
-                        	alwaysLinkToLastBuild: true,
-                        	keepAll: true,
-                        	reportDir: 'target/ExtentReports',        
-    						reportFiles: 'extent-report.html',
-    						reportName: 'Extent Report'
-                    	],
+                    // Publish Extent Report
+                    publishHTML(
+                        allowMissing: true,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'target/ExtentReports',        
+                        reportFiles: 'extent-report.html',
+                        reportName: 'Extent Report'
+                    )
 
-                    	[
-                        	allowMissing: true,
-                        	alwaysLinkToLastBuild: true,
-                        	keepAll: true,
-                        	reportDir: 'test-output',
-                        	reportFiles: 'index.html',
-                        	reportName: 'TestNG Report'
-                     	]
-                   	])
+                    // Publish TestNG Report
+                    publishHTML(
+                        allowMissing: true,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'test-output',
+                        reportFiles: 'index.html',
+                        reportName: 'TestNG Report'
+                    )
                 }
             }
         }
